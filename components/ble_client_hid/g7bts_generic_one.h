@@ -1,0 +1,6 @@
+#define USAGE_G7BTS_GENERIC_ONE "G7BTS Generic One"
+
+
+#define USAGE_PAGE_G7BTS_GENERIC_ONE {"G7BTS Generic One", {\
+	{0, USAGE_G7BTS_GENERIC_ONE},\
+}}
