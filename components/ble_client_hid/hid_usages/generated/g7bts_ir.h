@@ -1,0 +1,6 @@
+#define USAGE_G7BTS_IR "G7BTS IR"
+
+
+#define USAGE_PAGE_G7BTS_IR {"G7BTS IR", {\
+	{0, USAGE_G7BTS_IR},\
+}}

@@ -19651,6 +19651,81 @@
         }
       ],
       "UsageIdGenerator": null
+    },
+    {
+      "Kind": "Defined",
+      "Id": 192,
+      "Name": "G7BTS Generic One",
+      "UsageIds": [
+        {
+          "Id": 0,
+          "Name": "G7BTS Generic One",
+          "Kinds": [
+            "Sel"
+          ]
+        }
+      ],
+      "UsageIdGenerator": null
+    },
+    {
+      "Kind": "Defined",
+      "Id": 191,
+      "Name": "G7BTS Generic Two",
+      "UsageIds": [
+        {
+          "Id": 0,
+          "Name": "G7BTS Generic Two",
+          "Kinds": [
+            "Sel"
+          ]
+        }
+      ],
+      "UsageIdGenerator": null
+    },
+    {
+      "Kind": "Defined",
+      "Id": 190,
+      "Name": "G7BTS Generic Three",
+      "UsageIds": [
+        {
+          "Id": 0,
+          "Name": "G7BTS Generic Three",
+          "Kinds": [
+            "Sel"
+          ]
+        }
+      ],
+      "UsageIdGenerator": null
+    },
+    {
+      "Kind": "Defined",
+      "Id": 189,
+      "Name": "G7BTS Generic Four",
+      "UsageIds": [
+        {
+          "Id": 0,
+          "Name": "G7BTS Generic Four",
+          "Kinds": [
+            "Sel"
+          ]
+        }
+      ],
+      "UsageIdGenerator": null
+    },
+    {
+      "Kind": "Defined",
+      "Id": 194,
+      "Name": "G7BTS IR",
+      "UsageIds": [
+        {
+          "Id": 0,
+          "Name": "G7BTS IR",
+          "Kinds": [
+            "Sel"
+          ]
+        }
+      ],
+      "UsageIdGenerator": null
     }
   ]
 }
