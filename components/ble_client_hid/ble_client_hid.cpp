@@ -180,34 +180,35 @@ void BLEClientHID::gattc_event_handler(esp_gattc_cb_event_t event,
 }
 
 void BLEClientHID::send_input_report_event(esp_ble_gattc_cb_param_t *p_data){
-  ESP_LOGD(TAG, "Received HID input report from handle %d",
-                 p_data->notify.handle);
-  uint8_t *data = new uint8_t[p_data->notify.value_len + 1];
-  memcpy(data + 1, p_data->notify.value, p_data->notify.value_len);
-  data[0] = this->handle_report_id[p_data->notify.handle];
-  std::vector<HIDReportItemValue> hid_report_values = this->hid_report_map->parse(data);
-  if(hid_report_values.size() == 0){
+    ESP_LOGD(TAG, "Received HID input report from handle %d",
+        p_data->notify.handle);
+    uint8_t *data = new uint8_t[p_data->notify.value_len + 1];
+    memcpy(data + 1, p_data->notify.value, p_data->notify.value_len);
+    data[0] = this->handle_report_id[p_data->notify.handle];
+    std::vector<HIDReportItemValue> hid_report_values = this->hid_report_map->parse(data);
+    if(hid_report_values.size() == 0){
+        delete[] data;
+        return;
+    }
+    for(HIDReportItemValue value : hid_report_values){
+        std::string usage;
+        if(USAGE_PAGES.count(value.usage.page) > 0 && USAGE_PAGES.at(value.usage.page).usages_.count(value.usage.usage) > 0){
+            usage = USAGE_PAGES.at(value.usage.page).usages_.at(value.usage.usage);
+        } else {
+            usage = std::to_string(value.usage.page) + "_" + std::to_string(value.usage.usage);
+        }
+        std::string remote_id = this->parent()->address_str();
+        this->fire_homeassistant_event("esphome.hid_events", {{"usage", usage}, {"value", std::to_string(value.value)}, {"remote_id", remote_id} });
+        if(this->last_event_usage_text_sensor != nullptr){
+            this->last_event_usage_text_sensor->publish_state(usage);
+        }
+        if(this->last_event_value_sensor != nullptr){
+            this->last_event_value_sensor->publish_state(value.value);
+        }
+        ESP_LOGD(TAG, "Send HID event to HomeAssistant: usage: %s, value: %d, remote_id: %s", usage.c_str(), value.value, remote_id.c_str());
+    }
+
     delete[] data;
-    return;
-  }
-  for(HIDReportItemValue value : hid_report_values){
-    std::string usage;
-    if(USAGE_PAGES.count(value.usage.page) > 0 && USAGE_PAGES.at(value.usage.page).usages_.count(value.usage.usage) > 0){
-      usage = USAGE_PAGES.at(value.usage.page).usages_.at(value.usage.usage);
-    } else {
-      usage = std::to_string(value.usage.page) + "_" + std::to_string(value.usage.usage);
-    }
-    this->fire_homeassistant_event("esphome.hid_events", {{"usage", usage}, {"value", std::to_string(value.value)}});
-    if(this->last_event_usage_text_sensor != nullptr){
-      this->last_event_usage_text_sensor->publish_state(usage);
-    }
-    if(this->last_event_value_sensor != nullptr){
-      this->last_event_value_sensor->publish_state(value.value);
-    }
-    ESP_LOGD(TAG, "Send HID event to HomeAssistant: usage: %s, value: %d", usage.c_str(), value.value);
-  }
-  
-  delete[] data;
 }
 
 void BLEClientHID::register_last_event_value_sensor(
